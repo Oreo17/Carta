@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti, Luz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0d0d0d;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fondo con textura sutil */
+        .background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 183, 77, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 214, 0, 0.02) 0%, transparent 50%),
+                #0d0d0d;
+            z-index: 1;
+        }
+
+        /* Partículas sutiles */
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 200, 87, 0.2);
+            border-radius: 50%;
+            animation: float-particle 30s infinite;
+        }
+
+        @keyframes float-particle {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        /* Container principal */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+        }
+
+        /* Sobre */
+        .envelope {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .envelope:hover {
+            transform: translateY(-10px);
+        }
+
+        .envelope-container {
+            background: linear-gradient(145deg, #1a1a1a 0%, #121212 100%);
+            border: 1.5px solid rgba(255, 183, 77, 0.25);
+            border-radius: 16px;
+            padding: 70px 45px;
+            box-shadow: 
+                0 25px 70px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(255, 183, 77, 0.08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .envelope-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 183, 77, 0.3), transparent);
+        }
+
+        /* Girasol SVG animado */
+        .sunflower-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 35px;
+            position: relative;
+            animation: gentle-rotate 20s infinite linear;
+        }
+
+        @keyframes gentle-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .sunflower-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 12px rgba(255, 183, 77, 0.2));
+        }
+
+        .envelope-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 36px;
+            color: #e8b86d;
+            margin-bottom: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .open-button {
+            background: transparent;
+            border: 1.5px solid rgba(232, 184, 109, 0.6);
+            color: #e8b86d;
+            padding: 16px 55px;
+            font-size: 13px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .open-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(232, 184, 109, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .open-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .open-button:hover {
+            border-color: rgba(232, 184, 109, 0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(232, 184, 109, 0.2);
+        }
+
+        /* Carta */
+        .letter {
+            position: absolute;
+            width: 100%;
+            max-width: 650px;
+            background: linear-gradient(to bottom, #111111, #1a1a1a);
+            padding: 65px 55px;
+            border-radius: 16px;
+            box-shadow: 
+                0 35px 100px rgba(0, 0, 0, 0.9),
+                inset 0 1px 0 rgba(232, 184, 109, 0.15);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0) rotateY(90deg);
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 20;
+            border: 1.5px solid rgba(232, 184, 109, 0.25);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .letter.show {
+            transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+            opacity: 1;
+        }
+
+        /* Scrollbar */
+        .letter::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .letter::-webkit-scrollbar-track {
+            background: rgba(232, 184, 109, 0.05);
+            border-radius: 10px;
+        }
+
+        .letter::-webkit-scrollbar-thumb {
+            background: rgba(232, 184, 109, 0.25);
+            border-radius: 10px;
+        }
+
+        .letter::-webkit-scrollbar-thumb:hover {
+            background: rgba(232, 184, 109, 0.4);
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 55px;
+            position: relative;
+            padding-bottom: 35px;
+        }
+
+        .letter-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(232, 184, 109, 0.4), transparent);
+        }
+
+        .letter-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 52px;
+            color: #e8b86d;
+            margin-bottom: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .letter-year {
+            font-size: 13px;
+            color: rgba(232, 184, 109, 0.4);
+            letter-spacing: 8px;
+            font-weight: 300;
+        }
+
+        .letter-content {
+            color: #b8b8b8;
+            line-height: 2;
+            font-size: 17px;
+            font-weight: 300;
+        }
+
+        .greeting {
+            font-family: 'Crimson Text', serif;
+            font-size: 26px;
+            color: #e8b86d;
+            margin-bottom: 35px;
+            font-weight: 600;
+        }
+
+        .letter-content p {
+            margin-bottom: 26px;
+            text-align: justify;
+        }
+
+        .letter-content strong {
+            color: #e8b86d;
+            font-weight: 500;
+        }
+
+        .signature-container {
+            margin-top: 65px;
+            text-align: right;
+            color: rgba(232, 184, 109, 0.6);
+            font-size: 16px;
+            line-height: 2;
+            font-weight: 300;
+        }
+
+        .signature-name {
+            font-family: 'Crimson Text', serif;
+            font-size: 32px;
+            color: #e8b86d;
+            margin-top: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .video-container {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .video-button {
+            display: inline-block;
+            background: linear-gradient(145deg, #1a1a1a 0%, #121212 100%);
+            border: 1.5px solid rgba(232, 184, 109, 0.4);
+            border-radius: 12px;
+            padding: 25px 35px;
+            text-decoration: none;
+            color: #e8b86d;
+            font-size: 16px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-button::before {
+            content: '▶';
+            font-size: 24px;
+            margin-right: 12px;
+            display: inline-block;
+        }
+
+        .video-button:hover {
+            border-color: rgba(232, 184, 109, 0.8);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(232, 184, 109, 0.3);
+            background: linear-gradient(145deg, #1f1f1f 0%, #171717 100%);
+        }
+
+        .video-caption {
+            text-align: center;
+            color: rgba(232, 184, 109, 0.6);
+            font-size: 14px;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .letter-footer {
+            margin-top: 55px;
+            padding-top: 35px;
+            border-top: 1px solid rgba(232, 184, 109, 0.15);
+            text-align: center;
+            color: rgba(232, 184, 109, 0.4);
+            font-size: 13px;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        /* Confeti */
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            opacity: 0;
+            animation: confetti-fall 4.5s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 0.9;
+                transform: translateY(-30px) rotateZ(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotateZ(720deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .envelope-container {
+                padding: 50px 35px;
+            }
+
+            .sunflower-icon {
+                width: 75px;
+                height: 75px;
+            }
+
+            .envelope-title {
+                font-size: 32px;
+            }
+
+            .open-button {
+                padding: 14px 45px;
+                font-size: 12px;
+            }
+
+            .letter {
+                padding: 45px 35px;
+            }
+
+            .letter-title {
+                font-size: 40px;
+            }
+
+            .letter-year {
+                font-size: 12px;
+                letter-spacing: 6px;
+            }
+
+            .letter-content {
+                font-size: 16px;
+                line-height: 1.9;
+            }
+
+            .greeting {
+                font-size: 23px;
+            }
+
+            .signature-name {
+                font-size: 28px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    
+    <div id="particles"></div>
+
+    <div class="container">
+        <!-- Sobre -->
+        <div class="envelope" id="envelope">
+            <div class="envelope-container">
+                <div class="sunflower-icon">
+                    <svg class="sunflower-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Pétalos -->
+                        <g opacity="0.9">
+                            <ellipse cx="50" cy="20" rx="8" ry="18" fill="#ffb74d" transform="rotate(0 50 50)"/>
+                            <ellipse cx="50" cy="20" rx="8" ry="18" fill="#ffb74d" transform="rotate(45 50 50)"/>
+                            <ellipse cx="50" cy="20" rx="8" ry="18" fill="#ffa726" transform="rotate(90 50 50)"/>
+                            <ellipse cx="50" cy="20" rx="8" ry="18" fill="#ffb74d" transform="rotate(135 50 50)"/>
+                            <ellipse cx="50" cy="20" rx="8" ry="18" fill="#ff9800" transform="rotate(180 50 50)"/>
+                            <ellipse cx="50" cy="20" rx="8" ry="18" fill="#ffb74d" transform="rotate(225 50 50)"/>
+                            <ellipse cx="50" cy="20" rx="8" ry="18" fill="#ffa726" transform="rotate(270 50 50)"/>
+                            <ellipse cx="50" cy="20" rx="8" ry="18" fill="#ffb74d" transform="rotate(315 50 50)"/>
+                        </g>
+                        <!-- Centro -->
+                        <circle cx="50" cy="50" r="15" fill="#8d6e63"/>
+                        <circle cx="50" cy="50" r="12" fill="#6d4c41" opacity="0.8"/>
+                        <!-- Detalles del centro -->
+                        <circle cx="47" cy="47" r="2" fill="#5d4037" opacity="0.6"/>
+                        <circle cx="53" cy="48" r="1.5" fill="#5d4037" opacity="0.6"/>
+                        <circle cx="50" cy="53" r="1.5" fill="#5d4037" opacity="0.6"/>
+                    </svg>
+                </div>
+                <h2 class="envelope-title">Para Luz</h2>
+                <button class="open-button" id="openBtn">Abrir</button>
+            </div>
+        </div>
+
+        <!-- Carta -->
+        <div class="letter" id="letter">
+            <div class="letter-header">
+                <h1 class="letter-title">Feliz Año Nuevo</h1>
+                <p class="letter-year">2 0 2 6</p>
+            </div>
+            
+            <div class="letter-content">
+                <div class="greeting">Querida Luz,</div>
+                
+                <p>
+                    Qué alegría tan grande poder haber coincidido contigo en esta etapa. Compartir el camino con una persona tan increíble como tú ha sido un verdadero privilegio.
+                </p>
+                
+                <p>
+                    Me alegra mucho por todos los logros que has tenido este año, por el desarrollo y crecimiento que estás teniendo. Estoy seguro de que están muy felices con este gran elemento que tienen a su cargo, porque eres una mujer <strong>talentosa, dedicada, responsable, encantadora, inteligente y sin igual.</strong>
+                </p>
+                
+                <p>
+                    <strong>Te admiro mucho, te aprecio mucho, te respeto y te quiero.</strong> Mi más grande admiración hacia ti, Luz. Sé que lograrás cosas grandiosas porque tienes todo lo necesario para alcanzar el éxito que mereces.
+                </p>
+                
+                <p>
+                    Gracias por compartirme tus recomendaciones. Me está gustando mucho Friends y las canciones que en su momento me compartiste, gracias por eso.
+                </p>
+
+                <div class="video-container">
+                    <a href="https://www.youtube.com/watch?v=TLPdxz2wioA" target="_blank" class="video-button">
+                        Ver
+                    </a>
+                </div>
+                <p class="video-caption">Por las risas que me has dado con tus recomendaciones</p>
+                
+                <p>
+                    Te deseo lo mejor que este mundo puede ofrecerte. Que este 2026 traiga a tu vida <strong>salud, éxitos profesionales, grandes momentos, alegrías y plenitud</strong> en cada uno de sus aspectos.
+                </p>
+                
+                <p>
+                    Pásala muy bien con tu familia, recarga energías porque <strong>este será tu año.</strong> Lograrás cada una de las cosas por las que luches y te propongas. <strong>Llegarás lejos, llegarás lejos, Coconi.</strong>
+                </p>
+                
+                <p>
+                    Te mando un fuerte y gran abrazo.
+                </p>
+                
+                <div class="signature-container">
+                    Con todo mi cariño y dedicación para ti,
+                    <div class="signature-name">Ore</div>
+                </div>
+            </div>
+            
+            <div class="letter-footer">
+                Que cada día de este año te traiga felicidad
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Crear partículas de fondo
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 30 + 's';
+            particle.style.animationDuration = (Math.random() * 25 + 25) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Función para crear confeti
+        function createConfetti() {
+            const colors = [
+                'rgba(255, 183, 77, 0.7)',
+                'rgba(255, 167, 38, 0.6)',
+                'rgba(232, 184, 109, 0.8)',
+                'rgba(255, 152, 0, 0.5)'
+            ];
+            
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-30px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    confetti.style.animationDelay = Math.random() * 0.2 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 3.5) + 's';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 6000);
+                }, i * 60);
+            }
+        }
+
+        // Abrir carta
+        const openBtn = document.getElementById('openBtn');
+        const envelope = document.getElementById('envelope');
+        const letter = document.getElementById('letter');
+
+        openBtn.addEventListener('click', () => {
+            createConfetti();
+            
+            envelope.style.transition = 'opacity 1s ease, transform 1s ease';
+            envelope.style.opacity = '0';
+            envelope.style.transform = 'scale(0.95) translateY(20px)';
+            
+            setTimeout(() => {
+                envelope.style.display = 'none';
+                letter.classList.add('show');
+            }, 1000);
+        });
+
+        // Click en el contenedor del sobre
+        envelope.addEventListener('click', (e) => {
+            if (!letter.classList.contains('show')) {
+                openBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
